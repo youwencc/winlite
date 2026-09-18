@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows优化助手（WinLite） — 硬件信息/强制删除/右键清理/软件卸载/系统更新/服务优化/开机启动项，开源永久免费</title>
+<meta name="description" content="Windows优化助手（WinLite） v2.0：Windows 系统优化工具，硬件信息、强制删除、右键菜单清理、软件卸载、系统更新修复与禁止、服务优化、开机启动项管理，单文件免安装，开源永久免费。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%231D1D1F'/%3E%3Cpath d='M8 9.5h8l-.6 8a1.6 1.6 0 0 1-1.6 1.5h-3.6A1.6 1.6 0 0 1 8.6 17.5l-.6-8z' fill='white'/%3E%3Cpath d='M7 6.5h10M9.5 6.5V5.8A1.3 1.3 0 0 1 10.8 4.5h2.4a1.3 1.3 0 0 1 1.3 1.3v.7' stroke='white' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#1D1D1F; --ink2:#2C2C2E; --gray:#3A3A3C; --sub:#6E6E73; --dim:#8E8E93; --faint:#AEAEB2;
+  --line:#E2E2E6; --line2:#EFEFF2; --bg:#FFFFFF; --bg2:#F5F5F7; --bg3:#EFEFF2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"Segoe UI Variable","Segoe UI","Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+img{max-width:100%;display:block}
+
+/* ============ 顶部导航 ============ */
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line2)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:58px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+.brand svg{width:26px;height:26px}
+.brand .ver{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-size:11px;font-weight:600;color:var(--sub)}
+.nav-links{display:flex;gap:26px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--sub);font-size:13.5px;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--ink)}
+.nav-dl{background:var(--ink);color:#fff!important;border-radius:9px;padding:8px 18px;font-weight:600}
+
+/* ============ Hero（纯黑头部，呼应软件） ============ */
+.hero{background:var(--ink);color:#fff;padding:88px 0 0;overflow:hidden}
+.hero-in{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-size:42px;line-height:1.24;font-weight:800;letter-spacing:-.5px}
+.hero h1 .v{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);border-radius:999px;font-size:15px;font-weight:600;vertical-align:middle;padding:3px 12px;margin-left:10px;letter-spacing:0}
+.hero .tag{margin-top:16px;font-size:16.5px;color:#C7C7CC;max-width:30em}
+.hero .points{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 22px;color:#AEAEB2;font-size:13.5px}
+.hero .points b{color:#fff;font-weight:600}
+.dl-row{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;border-radius:11px;padding:15px 26px;font-weight:700;font-size:15px;transition:transform .12s,box-shadow .12s,background .15s;border:1px solid transparent}
+.btn:hover{transform:translateY(-2px)}
+.btn svg{width:18px;height:18px}
+.btn-white{background:#fff;color:var(--ink);box-shadow:0 8px 26px rgba(0,0,0,.35)}
+.btn-white:hover{background:#F0F0F2}
+.btn-ghost{border-color:rgba(255,255,255,.3);color:#fff;background:rgba(255,255,255,.05)}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.btn-sm{padding:9px 14px;font-size:13px;gap:8px;border-radius:9px}
+.btn-sm svg{width:15px;height:15px}
+.hero-note{margin-top:14px;color:#8E8E93;font-size:12px}
+.hero .shot-wrap{position:relative}
+.hero .shot-wrap::before{content:"";position:absolute;inset:24px -18px -1px 24px;background:linear-gradient(160deg,#3A3A3C,#1D1D1F);border-radius:18px;transform:rotate(-1.2deg);z-index:0}
+.shot{border-radius:14px;border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 70px rgba(0,0,0,.5);position:relative;z-index:1;background:#fff;overflow:hidden}
+.hero .shot{margin-bottom:-2px}
+.badges{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:10px 16px;text-align:center;min-width:96px}
+.badge b{display:block;font-size:19px;font-weight:800}
+.badge span{font-size:11px;color:#AEAEB2}
+
+/* ============ 通用区块 ============ */
+section{padding:84px 0}
+.sec-head{max-width:640px;margin-bottom:46px}
+.sec-head .eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.sec-head h2{font-size:31px;font-weight:800;letter-spacing:-.3px;margin-top:10px}
+.sec-head p{color:var(--sub);margin-top:12px;font-size:15px}
+
+/* 功能大图区块（左右交替） */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:26px 0}
+.feat+.feat{margin-top:56px}
+.feat.rev .feat-txt{order:2}
+.feat.rev .feat-shot{order:1}
+.feat-num{font-size:13px;font-weight:800;color:var(--faint);letter-spacing:.1em}
+.feat h3{font-size:26px;font-weight:800;margin:8px 0 14px;letter-spacing:-.2px}
+.feat p{color:var(--sub);font-size:15px}
+.feat ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+.feat li{display:flex;gap:10px;font-size:13.5px;color:var(--gray)}
+.feat li svg{width:16px;height:16px;flex:none;margin-top:3px}
+.feat .shot{border-color:var(--line);box-shadow:0 22px 50px rgba(29,29,31,.13)}
+.shot.crop{aspect-ratio:4/3;overflow:hidden}
+.shot.crop img{width:100%;height:100%;object-fit:cover;object-position:50% 8%}
+.alt-bg{background:var(--bg2)}
+
+/* 特性网格 */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature-card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:24px 22px;transition:box-shadow .15s,transform .15s}
+.feature-card:hover{box-shadow:0 14px 34px rgba(29,29,31,.08);transform:translateY(-3px)}
+.feature-card .ic{width:40px;height:40px;border-radius:11px;background:var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feature-card .ic svg{width:20px;height:20px}
+.feature-card h4{font-size:15.5px;font-weight:700}
+.feature-card p{font-size:12.8px;color:var(--sub);margin-top:7px}
+
+/* ============ 下载区 ============ */
+.download{background:var(--ink);color:#fff}
+.download .sec-head .eyebrow{color:#8E8E93}
+.download .sec-head p{color:#AEAEB2}
+.dl-cards{display:grid;grid-template-columns:1fr;max-width:560px;margin:0 auto;gap:20px}
+.dl-card{background:#fff;color:var(--ink);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column}
+.dl-card .dl-name{display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:17px}
+.dl-card .rec{background:var(--ink);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:3px 11px}
+.dl-card .dl-desc{color:var(--sub);font-size:13px;margin:10px 0 4px;line-height:1.65}
+.dl-card table{width:100%;margin:14px 0 20px;border-collapse:collapse;font-size:12.6px;table-layout:fixed}
+.dl-card td{padding:7px 0;border-bottom:1px solid var(--line2);color:var(--gray)}
+.dl-card td:first-child{color:var(--dim);width:38%}
+.dl-card .btn-row{display:flex;gap:10px}
+.dl-card .btn-row .btn{justify-content:center;background:var(--ink);color:#fff;flex:1;padding:12px 16px}
+.dl-card .btn-row .btn:hover{background:#3A3A3C}
+.dl-card .btn-row .btn-ghost-sm{justify-content:center;background:#fff;color:var(--ink);border:1px solid var(--line);flex:1;padding:12px 16px}
+.dl-card .btn-row .btn-ghost-sm:hover{background:#F5F5F7;border-color:var(--ink)}
+.dl-tip{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dl-tip div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:13px 15px;font-size:12.4px;color:#C7C7CC}
+.dl-tip b{color:#fff}
+
+/* ============ 页脚 ============ */
+footer{border-top:1px solid var(--line2);padding:34px 0 40px;background:var(--bg)}
+.foot-in{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.foot-copy{color:var(--dim);font-size:12.6px}
+.foot-links{display:flex;gap:20px;font-size:13px}
+.foot-links a{color:var(--sub);text-decoration:none;font-weight:600}
+.foot-links a:hover{color:var(--ink)}
+
+@media (max-width:900px){
+  .hero{padding-top:60px}
+  .hero-in{grid-template-columns:1fr;gap:40px}
+  .hero h1{font-size:32px}
+  .feat{grid-template-columns:1fr;gap:30px}
+  .feat.rev .feat-txt{order:0}
+  .feat.rev .feat-shot{order:1}
+  .feature-grid{grid-template-columns:1fr}
+  .dl-cards{grid-template-columns:1fr}
+  .dl-tip{grid-template-columns:1fr}
+  .nav-links a:not(.nav-dl){display:none}
+  section{padding:60px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand">
+      <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#1D1D1F"/><path d="M8 9.5h8l-.6 8a1.6 1.6 0 0 1-1.6 1.5h-3.6A1.6 1.6 0 0 1 8.6 17.5l-.6-8z" fill="white"/><path d="M7 6.5h10M9.5 6.5V5.8A1.3 1.3 0 0 1 10.8 4.5h2.4a1.3 1.3 0 0 1 1.3 1.3v.7" stroke="white" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+      Windows优化助手（WinLite） <span class="ver">v2.0</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">功能介绍</a>
+      <a href="#shots">界面预览</a>
+      <a href="#download">下载</a>
+      <a class="nav-dl" href="#download">立即下载</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-in">
+      <div>
+        <h1>Windows 系统优化<br>一个工具全部搞定<span class="v">v2.0</span></h1>
+        <p class="tag">Windows优化助手（WinLite） —— 硬件信息、强制删除、右键菜单清理、软件卸载、系统更新修复、服务优化、开机启动项管理，七合一开源免费工具。</p>
+        <div class="points">
+          <span><b>硬件信息</b> · 一键采集导出</span>
+          <span><b>强制删除</b> · 解除占用</span>
+          <span><b>服务优化</b> · 扫描全部服务</span>
+          <span><b>启动项管理</b> · 禁用恢复</span>
+        </div>
+        <div class="dl-row">
+          <a class="btn btn-white btn-sm" href="https://pan.baidu.com/s/13BBE7lbqgZ1snfwypgUymg?pwd=unqc" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 20h16"/></svg>
+            百度网盘下载
+          </a>
+          <a class="btn btn-white btn-sm" href="https://pan.quark.cn/s/ff7eadadb407?pwd=YBCu" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 20h16"/></svg>
+            夸克网盘下载
+          </a>
+        </div>
+        <p class="hero-note">单文件绿色软件 · 免安装 · 支持 Windows 10 / 11 · 已通过作者实测</p>
+        <div class="badges">
+          <div class="badge"><b>7</b><span>大功能合一</span></div>
+          <div class="badge"><b>100%</b><span>开源免费</span></div>
+          <div class="badge"><b>1.4MB</b><span>单文件便携</span></div>
+        </div>
+      </div>
+      <div class="shot-wrap">
+        <img class="shot" src="assets/shot-hardware.png" alt="Windows优化助手（WinLite） 硬件信息界面">
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 功能大图 ===== -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Core Features</div>
+      <h2>七个模块，覆盖日常系统优化</h2>
+      <p>从硬件体检到深度清理，删除与卸载前自动备份、可恢复，误操作也有后悔药。</p>
+    </div>
+
+    <div class="feat">
+      <div class="feat-txt">
+        <div class="feat-num">01 · 硬件信息</div>
+        <h3>电脑配置一目了然，截图即分享</h3>
+        <p>一键采集处理器、主板、内存、显卡、显示器、磁盘、声卡、网卡完整硬件信息，顶部三卡展示型号 / 系统 / 运行时间。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>八类硬件信息自动采集，无需拆机</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>显示器显示尺寸与当前 / 最大刷新率</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>导出带水印截图，方便咨询与分享</li>
+        </ul>
+      </div>
+      <div class="feat-shot"><div class="shot crop"><img src="assets/shot-hardware.png" alt="硬件信息界面预览"></div></div>
+    </div>
+
+    <div class="feat rev">
+      <div class="feat-txt">
+        <div class="feat-num">02 · 强制删除</div>
+        <h3>删不掉的文件？拖进来就完了</h3>
+        <p>支持文件、文件夹批量拖放删除。自动尝试强制获取权限（takeown + icacls）、结束占用进程，仍失败时标记为重启后删除，绝不半途而废。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>批量拖放，多路径同时处理</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>强制获取权限 + 结束占用进程</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>失败自动标记，重启后彻底删除</li>
+        </ul>
+      </div>
+      <div class="feat-shot"><div class="shot crop"><img src="assets/shot-force.png" alt="强制删除界面预览"></div></div>
+    </div>
+
+    <div class="feat">
+      <div class="feat-txt">
+        <div class="feat-num">03 · 右键菜单清理</div>
+        <h3>让右键菜单回到清爽的样子</h3>
+        <p>扫描全部右键菜单项，按第三方 / 系统 / 本软件分类统计，显示软件厂商与菜单位置。勾选即可清理，清理前自动备份，随时一键恢复。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>分类筛选：全部 / 第三方 / 系统 / 本软件</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>厂商与菜单位置（桌面 / 文件 / 文件夹）标记</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>清理前自动备份，按时间点恢复</li>
+        </ul>
+      </div>
+      <div class="feat-shot"><div class="shot crop"><img src="assets/shot-context.png" alt="右键菜单清理界面预览"></div></div>
+    </div>
+
+    <div class="feat rev">
+      <div class="feat-txt">
+        <div class="feat-num">04 · 软件卸载</div>
+        <h3>卸载软件，连注册表一起清干净</h3>
+        <p>扫描全部已安装软件，显示版本、安装时间、发布者、大小，支持按任意列排序。常规卸载调用官方卸载向导；顽固软件一键强制卸载并清理残留。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>安装时间 / 发布者 / 大小一目了然</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>强制卸载：结束进程 + 清理文件 + 注册表</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>卸载残留注册表一键清理（仅备份注册表）</li>
+        </ul>
+      </div>
+      <div class="feat-shot"><div class="shot crop"><img src="assets/shot-uninstall.png" alt="软件卸载界面预览"></div></div>
+    </div>
+
+    <div class="feat">
+      <div class="feat-txt">
+        <div class="feat-num">05 · 系统更新</div>
+        <h3>更新坏了能修复，不想更新能禁止</h3>
+        <p>深度检测 Windows 更新被禁用 / 限制的配置（服务、hosts、暂停更新等），一键修复被禁用或损坏的更新组件；也可一键禁止自动更新，防止后台占用与强制重启。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>检测禁用配置：服务 / hosts / 暂停更新</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>一键修复 Windows 更新服务与依赖项</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>一键禁止 / 恢复自动更新，防后台占用</li>
+        </ul>
+      </div>
+      <div class="feat-shot"><div class="shot crop"><img src="assets/shot-update.png" alt="系统更新界面预览"></div></div>
+    </div>
+
+    <div class="feat rev">
+      <div class="feat-txt">
+        <div class="feat-num">06 · 服务优化</div>
+        <h3>扫描全部服务，找到拖慢电脑的元凶</h3>
+        <p>检测系统全部服务（数百项），自动归类系统 / 第三方并读取厂商信息，内置推荐禁用清单。一键禁用后台占用服务，随时一键恢复。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>扫描全部服务，按系统 / 第三方分类</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>推荐禁用 / 谨慎禁用风险分级 + 厂商标注</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>一键禁用 / 恢复，禁用后提示重启生效</li>
+        </ul>
+      </div>
+      <div class="feat-shot"><div class="shot crop"><img src="assets/shot-services.png" alt="服务优化界面预览"></div></div>
+    </div>
+
+    <div class="feat">
+      <div class="feat-txt">
+        <div class="feat-num">07 · 开机启动项</div>
+        <h3>开机慢？看看这些常驻程序</h3>
+        <p>扫描注册表 Run 键与启动文件夹的全部启动项，显示命令、厂商与来源。一键禁用不常用的自动启动程序，明显加快开机速度、释放内存。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>注册表 HKCU / HKLM + 启动文件夹全覆盖</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>厂商与来源标注，禁用 / 启用一键切换</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16M13 5l7 7-7 7"/></svg>禁用项自动备份，可随时还原</li>
+        </ul>
+      </div>
+      <div class="feat-shot"><div class="shot crop"><img src="assets/shot-startup.png" alt="开机启动项界面预览"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 特性网格 ===== -->
+<section class="alt-bg" id="shots">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Why WinLite</div>
+      <h2>为普通用户设计，为顽固问题而生</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8-4 8 4v5c0 5-3.5 8.5-8 10.5-4.5-2-8-5.5-8-10.5V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>硬件体检</h4><p>一键采集八类硬件信息，刷新率、容量、型号全部显示，可导出带水印截图。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 20h16"/></svg></div>
+        <h4>拖入即删</h4><p>把文件或文件夹拖进窗口即可排队删除，支持批量，全程可视化反馈。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4.5v5c0 5-3.5 8.5-8 10.5-4.5-2-8-5.5-8-10.5v-5L12 2z"/></svg></div>
+        <h4>权限强制获取</h4><p>takeown + icacls 自动接管文件权限，只读、受保护文件也能删。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zM4 12h3m10 0h3M12 4v3m0 10v3"/></svg></div>
+        <h4>结束占用进程</h4><p>删除前自动定位并结束正在占用文件的进程，不再提示"文件被占用"。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m18 0V5a2 2 0 00-2-2h-4M9 21H5a2 2 0 01-2-2v-4m18 0v4a2 2 0 01-2 2h-4"/></svg></div>
+        <h4>右键菜单管理</h4><p>扫描全部右键菜单，第三方项分类标记，清理前后自动备份可恢复。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v7a1 1 0 01-1 1H5a1 1 0 01-1-1v-7M3 7h18v4a2 2 0 01-2 2H5a2 2 0 01-2-2V7zM7 7V4a1 1 0 011-1h8a1 1 0 011 1v3"/></svg></div>
+        <h4>软件卸载大师</h4><p>扫描已装软件，常规卸载走官方向导，顽固软件强制卸载并清理残留。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 20h16"/></svg></div>
+        <h4>更新修复 + 服务优化</h4><p>一键修复被禁用的 Windows 更新；扫描全部服务，禁用后台占用、一键恢复。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
+        <h4>启动项管理</h4><p>禁用注册表与文件夹里的自启动程序，开机更快，内存更省，随时还原。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 20h16"/></svg></div>
+        <h4>单文件绿色版</h4><p>一个 exe 到处用，免安装免依赖，U 盘拷贝即走，无后台无广告。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 下载区 ===== -->
+<section class="download" id="download">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Download</div>
+      <h2>下载 Windows优化助手（WinLite）</h2>
+      <p>精简版为唯一发行版本：单文件、体积小、双击即用。下载后如缺少 .NET 环境，程序会自动引导安装。</p>
+    </div>
+    <div class="dl-cards">
+      <div class="dl-card">
+        <div class="dl-name">精简版 <span class="rec">唯一版本 · 推荐</span></div>
+        <p class="dl-desc">单文件绿色软件，体积约 1.4 MB，双击即用。适合网络条件有限或追求极致小巧的用户。</p>
+        <table>
+          <tr><td>文件大小</td><td>1.4 MB（单文件）</td></tr>
+          <tr><td>系统要求</td><td>Windows 10 / 11 x64</td></tr>
+          <tr><td>安装方式</td><td>免安装，双击运行</td></tr>
+          <tr><td>运行环境</td><td>需 .NET 8 桌面运行时</td></tr>
+        </table>
+        <div class="btn-row">
+          <a class="btn" href="https://pan.baidu.com/s/13BBE7lbqgZ1snfwypgUymg?pwd=unqc" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 20h16"/></svg>
+            百度网盘下载
+          </a>
+          <a class="btn" href="https://pan.quark.cn/s/ff7eadadb407?pwd=YBCu" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 20h16"/></svg>
+            夸克网盘下载
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="dl-tip">
+      <div><b>提示：</b>精简版如提示缺少 .NET 环境，程序会自动弹出下载引导，一键跳转微软官方下载 .NET 8 桌面运行时（x64）。</div>
+      <div><b>开源：</b>本项目开源永久免费，欢迎反馈问题与参与开发。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 页脚 ===== -->
+<footer>
+  <div class="wrap foot-in">
+    <div class="foot-copy">Windows优化助手（WinLite） v2.0 · 开源永久免费 · 电脑小百科出品</div>
+    <div class="foot-links">
+      <a href="https://weget.site" target="_blank" rel="noopener">电脑小百科论坛</a>
+      <a href="https://winlite.weget.site" target="_blank" rel="noopener">软件官网：winlite.weget.site</a>
+      <a href="https://space.bilibili.com/595098830" target="_blank" rel="noopener">B站 @电脑小百科</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
